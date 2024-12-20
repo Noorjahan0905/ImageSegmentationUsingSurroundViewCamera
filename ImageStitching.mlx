@@ -1,5 +1,5 @@
-im1 = imread("E:\int\sdp3.jpeg");
-im2 = imread("E:\int\sdp4.jpeg");
+im1 = imread("E:\1.JPG");
+im2 = imread("E:\2 (1).JPG");
 imshow([im1 im2])
 im1 = im2double(im1);
 im1_gray = rgb2gray(im1);
