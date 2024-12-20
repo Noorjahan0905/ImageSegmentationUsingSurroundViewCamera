@@ -23,6 +23,34 @@ Image segmentation with a surround view camera involves dividing a 360-degree sc
 
 Each bar represents the frequency of pixels for a specific class
 
+<img src="https://github.com/user-attachments/assets/f72e5049-8392-4ff2-b9bc-7ae060356578" width="300">
+
+Evaluation of  Trained Network
+#Image Stitching and Semantic Segmentation Results
+
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; text-align: center;">
+    <div>
+        <img src="https://github.com/user-attachments/assets/0fe19658-a245-47d0-b43c-bbc2a2a0944f" width="300">
+        <p>Input Images</p>
+    </div>
+    <div>
+        <img src="https://github.com/user-attachments/assets/97e9537a-f8c9-4327-bdc8-4cbcc758c5a6" width="300">
+        <p>Feature Extraction</p>
+    </div>
+    <div>
+        <img src="https://github.com/user-attachments/assets/4f072ff7-d85a-49bc-ac7f-e7426a432e99" width="300">
+        <p>Stitched Image</p>
+    </div>
+    <div>
+        <img src="https://github.com/user-attachments/assets/8403fa07-a40e-457e-b714-a090955c7fce" width="300">
+        <p>Semantic Segmentation on Stitched Image</p>
+    </div>
+</div>
+
+
+
+
+
 
 
 
