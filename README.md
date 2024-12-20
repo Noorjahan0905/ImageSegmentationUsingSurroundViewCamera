@@ -26,7 +26,8 @@ Each bar represents the frequency of pixels for a specific class
 <img src="https://github.com/user-attachments/assets/f72e5049-8392-4ff2-b9bc-7ae060356578" width="300">
 
 Evaluation of  Trained Network
-#Image Stitching and Semantic Segmentation Results
+
+# Image Stitching and Semantic Segmentation Results
 
 <div style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 20px; text-align: center;">
     <div style="flex: 0 0 45%; text-align: center;">
