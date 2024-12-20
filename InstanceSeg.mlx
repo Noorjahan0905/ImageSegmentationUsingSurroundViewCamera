@@ -1,0 +1,13 @@
+dataFolder = fullfile(tempdir,"coco");
+trainedMaskRCNN_url = "https://www.mathworks.com/supportfiles/vision/data/maskrcnn_object_person_car_v2.mat";
+downloadTrainedMaskRCNN(trainedMaskRCNN_url,dataFolder);
+load(fullfile(dataFolder,"maskrcnn_object_person_car_v2.mat"));
+
+
+imTest = imread("E:\001\camera\back_camera\39.jpg");
+[masks,labels,score,boxes] = segmentObjects(net,imTest,Threshold=0.4);
+
+overlayedImage = insertObjectMask(imTest,masks);
+imshow(overlayedImage)
+
+showShape("rectangle",gather(boxes),Label=labels,LineColor="g")
