@@ -3,12 +3,12 @@ Image segmentation with a surround view camera involves dividing a 360-degree sc
 
 
 <div style="text-align: center;">
-    <img src="https://github.com/user-attachments/assets/86f5680a-e254-491f-89be-50c618233454" width="300" style="margin-right: 200px;">
+    <img src="https://github.com/user-attachments/assets/86f5680a-e254-491f-89be-50c618233454" width="300" style="margin-right: 20px;">
     <p>INPUT IMAGE</p>
 </div>
 
 <div style="text-align: center;">
-    <img src="https://github.com/user-attachments/assets/daa9c002-4050-4b77-ba6e-064e43012de4" width="300" style="margin-right: 200px;">
+    <img src="https://github.com/user-attachments/assets/daa9c002-4050-4b77-ba6e-064e43012de4" width="300" style="margin-right: 20px;">
     <p>EXPECTED RESULT</p>
 </div>
 
