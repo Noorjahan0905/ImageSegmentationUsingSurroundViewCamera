@@ -23,7 +23,7 @@ Image segmentation with a surround view camera involves dividing a 360-degree sc
 
 Each bar represents the frequency of pixels for a specific class
 
-<img src="https://github.com/user-attachments/assets/f72e5049-8392-4ff2-b9bc-7ae060356578" width="300">
+<img src="https://github.com/user-attachments/assets/f72e5049-8392-4ff2-b9bc-7ae060356578" width="500">
 
 Evaluation of  Trained Network
 
