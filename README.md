@@ -19,7 +19,7 @@ Image segmentation with a surround view camera involves dividing a 360-degree sc
 
 # Semantic segmentation using deep learning approach
 
-<img src="https://github.com/user-attachments/assets/478c1314-5e99-44f1-9351-627c67fd7745" width="300"">
+<img src="https://github.com/user-attachments/assets/478c1314-5e99-44f1-9351-627c67fd7745" width="300">
 
 Each bar represents the frequency of pixels for a specific class
 
