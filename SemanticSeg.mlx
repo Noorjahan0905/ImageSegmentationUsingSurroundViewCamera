@@ -1,0 +1,132 @@
+pretrainedURL = "https://ssd.mathworks.com/supportfiles/vision/data/deeplabv3plusResnet18CamVid_v2.zip";
+pretrainedFolder = fullfile(tempdir,"pretrainedNetwork");
+pretrainedNetworkZip = fullfile(pretrainedFolder,"deeplabv3plusResnet18CamVid_v2.zip"); 
+if ~exist(pretrainedNetworkZip,'file')
+    mkdir(pretrainedFolder);
+    disp("Downloading pretrained network (58 MB)...");
+    websave(pretrainedNestworkZip,pretrainedURL);
+end
+unzip(pretrainedNetworkZip, pretrainedFolder)
+pretrainedNetwork = fullfile(pretrainedFolder,"deeplabv3plusResnet18CamVid_v2.mat");  
+data = load(pretrainedNetwork);
+net = data.net;
+classes =[
+    "Sky"
+    "Building"
+    "Pole"
+    "Road"
+    "Pavement"
+    "Tree"
+    "SignSymbol"
+    "Fence"
+    "Car"
+    "Pedestrian"
+     "Bicyclist"];
+I = imread("parkinglot_left.png");
+inputSize = net.Layers(1).InputSize;
+I = imresize(I,inputSize(1:2));
+C = semanticseg(I,net);
+cmap = camvidColorMap;
+
+B = labeloverlay(I,C,Colormap=cmap,Transparency=0.4);
+figure
+imshow(B)
+pixelLabelColorbar(cmap, classes);
+imageURL = "http://web4.cs.ucl.ac.uk/staff/g.brostow/MotionSegRecData/files/701_StillsRaw_full.zip";
+labelURL = "http://web4.cs.ucl.ac.uk/staff/g.brostow/MotionSegRecData/data/LabeledApproved_full.zip";
+ 
+outputFolder = fullfile(tempdir,"CamVid"); 
+labelsZip = fullfile(outputFolder,"labels.zip");
+imagesZip = fullfile(outputFolder,"images.zip");
+
+imds = imageDatastore("C:\Users\Noor\Downloads\701_StillsRaw_full\701_StillsRaw_full");
+I = readimage(imds,559);
+I = histeq(I);
+imshow(I)
+labelIDs = camvidPixelLabelIDs();
+labelDir = fullfile(outputFolder,"labels");
+pxds = pixelLabelDatastore(labelDir,classes,labelIDs);
+C = readimage(pxds,559);
+cmap = camvidColorMap;
+B = labeloverlay(I,C,ColorMap=cmap);
+imshow(B)
+pixelLabelColorbar(cmap,classes);
+tbl = countEachLabel(pxds)
+frequency = tbl.PixelCount/sum(tbl.PixelCount);
+bar(1:numel(classes),frequency)
+xticks(1:numel(classes)) 
+xticklabels(tbl.Name)
+xtickangle(45)
+ylabel("Frequency")
+
+[imdsTrain, imdsVal, imdsTest,pxdsTrain, pxdsVal, pxdsTest] = partitionCamVidData(imds,pxds);
+numTrainingImages = numel(imdsTrain.Files)
+numValImages = numel(imdsVal.Files)
+numTestingImages = numel(imdsTest.Files)
+dsVal = combine(imdsVal,pxdsVal);
+dsTrain = combine(imdsTrain,pxdsTrain);
+xTrans = [-10 10];
+yTrans = [-10 10];
+dsTrain = transform(dsTrain, @(data)augmentImageAndLabel(data,xTrans,yTrans));
+imageSize = [720 960 3];
+numClasses = numel(classes);
+
+network = deeplabv3plusLayers(imageSize, numClasses, "resnet18");
+imageFreq = tbl.PixelCount ./ tbl.ImagePixelCount;
+classWeights = median(imageFreq) ./ imageFreq;
+options = trainingOptions("sgdm",...
+    LearnRateSchedule="piecewise",...
+    LearnRateDropPeriod=6,...
+    LearnRateDropFactor=0.1,...
+    Momentum=0.9,...
+    InitialLearnRate=1e-2,...
+    L2Regularization=0.005,...
+    ValidationData=dsVal,...
+    MaxEpochs=18,...  
+    MiniBatchSize=4,...
+    Shuffle="every-epoch",...
+    CheckpointPath=tempdir,...
+    VerboseFrequency=10,...
+    ValidationPatience=4);
+doTraining = false;
+if doTraining
+    [net,info] = trainnet(dsTrain,network,@(Y,T) modelLoss(Y,T,classWeights),options);
+end
+
+I = readimage(imdsTest,35);
+I = uint8((I));
+C = semanticseg(I,net,Classes=classes);
+
+B = labeloverlay(I,C,Colormap=cmap,Transparency=0.4);
+imshow(B)
+pixelLabelColorbar(cmap, classes);
+expectedResult = readimage(pxdsTest,35);
+actual = uint8(C);
+expected = uint8(expectedResult);
+imshowpair(actual, expected)
+
+iou = jaccard(C,expectedResult);
+table(classes,iou)
+pxdsResults = semanticseg(imdsTest,net, ...
+    Classes=classes, ...
+    MiniBatchSize=4, ...
+    WriteLocation=tempdir, ...
+    Verbose=false);
+
+metrics = evaluateSemanticSegmentation(pxdsResults,pxdsTest,Verbose=false);
+metrics.DataSetMetrics
+metrics.ClassMetrics
+
+imd = imageDatastore("E:\001\camera\front_left_camera");
+I = readimage(imd,10);
+I = uint8((I));
+C = semanticseg(I,net,Classes=classes);
+B = labeloverlay(I,C,Colormap=cmap,Transparency=0.4);
+imshow(B)
+
+imd = imageDatastore("E:\001\camera\front_right_camera");
+I = readimage(imd,10);
+I = uint8((I));
+C = semanticseg(I,net,Classes=classes);
+B = labeloverlay(I,C,Colormap=cmap,Transparency=0.4);
+imshow(B)
