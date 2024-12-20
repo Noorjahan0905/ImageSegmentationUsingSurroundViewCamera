@@ -1,0 +1,18 @@
+detector = vehicleDetectorACF('front-rear-view');
+I = imread('highway.png');
+[bboxes,scores] = detect(detector,I);
+
+I = insertObjectAnnotation(I,'rectangle',bboxes,scores);
+figure
+imshow(I)
+title('Detected Vehicles and Detection Scores')
+
+I = imread("E:\001\camera\front_camera\74.jpg");
+[bboxes,scores] = detect(detector,I);
+I = insertObjectAnnotation(I,'rectangle',bboxes,scores);
+figure
+imshow(I)
+title('Detected Vehicles and Detection Scores')
+
+xlim([526 1386])
+ylim([371 855])
